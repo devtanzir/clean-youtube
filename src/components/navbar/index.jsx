@@ -7,6 +7,8 @@ import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import { useState } from "react";
 import Modal from "../playlist-form";
+import { Link } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 
 const Navbar = ({ getPlaylist }) => {
   const [open, setOpen] = useState(false);
@@ -27,7 +29,13 @@ const Navbar = ({ getPlaylist }) => {
         <Container maxWidth={"lg"}>
           <Toolbar>
             <Stack sx={{ flexGrow: 1 }}>
-              <Typography variant="h4">Clean YouTube</Typography>
+              <Link
+                sx={{ textDecoration: "none", color: "black" }}
+                to={"/"}
+                component={RouterLink}
+              >
+                <Typography variant="h4">Clean YouTube</Typography>
+              </Link>
               <Typography variant="body1">By Tanzir Ibne Ali</Typography>
             </Stack>
             <Button onClick={handleClickOpen} variant="contained">

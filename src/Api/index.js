@@ -8,7 +8,7 @@ const getPlaylistItem = async (playlistId, pageToken = "", result = []) => {
 
   result = [...result, ...data.items];
   if (data.nextPageToken) {
-    result = getPlaylist(playlistId, data.nextPageToken, result);
+    result = getPlaylistItem(playlistId, data.nextPageToken, result);
   }
   return result;
 };

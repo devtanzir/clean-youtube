@@ -5,8 +5,15 @@ import CardActions from "@mui/material/CardActions";
 import Typography from "@mui/material/Typography";
 import { Button, Stack } from "@mui/material";
 import { PlayCircleOutline } from "@mui/icons-material";
+import { Link } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 
-const PlaylistCard = ({ playlistThumbnail, playlistTitle, channelTitle }) => {
+const PlaylistCard = ({
+  playlistThumbnail,
+  playlistTitle,
+  channelTitle,
+  playlistId,
+}) => {
   return (
     <Card
       sx={{
@@ -35,12 +42,19 @@ const PlaylistCard = ({ playlistThumbnail, playlistTitle, channelTitle }) => {
       </CardContent>
       <CardActions disableSpacing>
         <Button>
-          <Stack direction={"row"} alignItems={"center"} spacing={1}>
-            <PlayCircleOutline />
-            <Typography variant="body2" fontWeight={600}>
-              Start Tutorial
-            </Typography>
-          </Stack>
+          <Link
+            sx={{ textDecoration: "none", color: "black" }}
+            to={`/player/${playlistId}`}
+            component={RouterLink}
+          >
+            <Stack direction={"row"} alignItems={"center"} spacing={1}>
+              <PlayCircleOutline />
+
+              <Typography variant="body2" fontWeight={600}>
+                Start Tutorial
+              </Typography>
+            </Stack>
+          </Link>
         </Button>
       </CardActions>
     </Card>
