@@ -1,13 +1,11 @@
 import { Container, Typography } from "@mui/material";
 
-const NotFound = () => {
+const Recent = () => {
   return (
     <Container maxWidth={"lg"} sx={{ mt: 16 }}>
-      <Typography align="center" variant="h2">
-        404 Not Found
-      </Typography>
+      <Typography variant="h2"> This is recent </Typography>
     </Container>
   );
 };
 
-export default NotFound;
+export default Recent;

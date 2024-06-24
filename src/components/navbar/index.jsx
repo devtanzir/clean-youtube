@@ -9,8 +9,11 @@ import { useState } from "react";
 import Modal from "../playlist-form";
 import { Link } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
+import { useStoreActions } from "easy-peasy";
 
-const Navbar = ({ getPlaylist }) => {
+const Navbar = () => {
+  const playlist = useStoreActions((actions) => actions.playlists);
+
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -21,7 +24,7 @@ const Navbar = ({ getPlaylist }) => {
     setOpen(false);
   };
   const getPlaylistId = (playlistId) => {
-    getPlaylist(playlistId);
+    playlist.getPlaylists(playlistId);
   };
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -38,6 +41,17 @@ const Navbar = ({ getPlaylist }) => {
               </Link>
               <Typography variant="body1">By Tanzir Ibne Ali</Typography>
             </Stack>
+            <Box sx={{ flexGrow: 1, gap: 2, display: "flex" }}>
+              <Button to={"/"} component={RouterLink}>
+                All Playlist
+              </Button>
+              <Button to={"/recent"} component={RouterLink}>
+                Recent
+              </Button>
+              <Button to={"/favorite"} component={RouterLink}>
+                Favorite
+              </Button>
+            </Box>
             <Button onClick={handleClickOpen} variant="contained">
               Add Playlist
             </Button>

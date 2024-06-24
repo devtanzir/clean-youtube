@@ -7,6 +7,9 @@ const PlaylistsModel = {
   addPlaylist: action((state, payload) => {
     state.data[payload.playlistId] = payload;
   }),
+  removeFromPlaylist: action((state, payload) => {
+    delete state.data[payload];
+  }),
   setLoading: action((state, payload) => {
     state.isLoading = payload;
   }),
@@ -20,9 +23,10 @@ const PlaylistsModel = {
         if (!getState().data[payload]) {
           const playlist = await getPlaylist(payload);
           addPlaylist(playlist);
+          setError("");
         }
       } catch (e) {
-        e.response?.data?.error?.message || "Something went wrong";
+        setError(e.response?.data?.error?.message || "Something went wrong");
       } finally {
         setLoading(false);
       }

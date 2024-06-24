@@ -6,15 +6,20 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useState } from "react";
+import { extractPlaylistId } from "../../utils/utils";
 
 const Modal = ({ open, handleClose, getPlaylistId }) => {
   const [state, setState] = useState("");
   const handleSubmit = (e) => {
-    // TODO handle url later
     if (!state) {
       alert("invalid State");
     } else {
-      getPlaylistId(state);
+      const data = extractPlaylistId(state);
+      if (data) {
+        getPlaylistId(data);
+      } else {
+        return alert("invalid playlist Id");
+      }
       setState("");
       handleClose();
     }
