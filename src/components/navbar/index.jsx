@@ -37,7 +37,7 @@ const Navbar = () => {
                 to={"/"}
                 component={RouterLink}
               >
-                <Typography variant="h4">Clean YouTube</Typography>
+                <Typography variant="h4">StudyTube</Typography>
               </Link>
               <Typography variant="body1">By Tanzir Ibne Ali</Typography>
             </Stack>

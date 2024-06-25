@@ -1,50 +1,40 @@
 import { Card, CardContent, CardMedia, Typography } from "@mui/material";
 
-const PlaylistDetails = ({ current, date }) => {
+const PlaylistDetails = ({ playlist, date }) => {
   return (
     <Card
       sx={{
-        maxWidth: "100%",
+        position: "fixed",
+        maxWidth: "25vw",
         backgroundColor: "#f7f1e3",
         borderRadius: "10px 10px 0 0",
         padding: "30px",
-        maxHeight: "86vh",
-        ...(current?.playlistDescription?.length > 779 && {
+        maxHeight: "86.5vh",
+        ...(playlist?.playlistDescription?.length > 779 && {
           overflowY: "scroll",
           scrollBehavior: "smooth",
-          // Add custom scrollbar styles for Firefox
-          scrollbarWidth: "thin", // For Firefox
-          scrollbarColor: "#84817a #f7f1e3", // For Firefox
-          "&::-webkit-scrollbar": {
-            width: "5px",
-          },
-          "&::-webkit-scrollbar-track": {
-            background: "#f7f1e3",
-          },
-          "&::-webkit-scrollbar-thumb": {
-            background: "#84817a",
-            borderRadius: "10px",
-          },
+          scrollbarWidth: "thin",
+          scrollbarColor: "#84817a #f7f1e3",
         }),
       }}
     >
       <CardMedia
         sx={{ height: 260, borderRadius: "10px" }}
-        image={current?.playlistThumbnails.url}
+        image={playlist?.playlistThumbnails.url}
         title="green iguana"
       />
       <CardContent>
         <Typography gutterBottom variant="h5" fontWeight={700}>
-          {current.playlistTitle}
+          {playlist.playlistTitle}
         </Typography>
         <Typography variant="h6" fontSize={17} fontWeight={700}>
-          {current.channelTitle}
+          {playlist.channelTitle}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {current.playlistItems.length} Videos - {date}
+          {playlist.playlistItems.length} Videos - {date}
         </Typography>
         <Typography mt={5} variant="h6" fontSize={14} color="text.secondary">
-          {current?.playlistDescription}
+          {playlist?.playlistDescription}
         </Typography>
       </CardContent>
     </Card>

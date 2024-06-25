@@ -36,6 +36,7 @@ const PlaylistCard = ({
     const conf = confirm("Are You Sure");
     if (conf) {
       action.playlists.removeFromPlaylist(playlistId);
+      action.favorite.removeFromFavorite(playlistId);
     }
   };
   return (
@@ -75,7 +76,7 @@ const PlaylistCard = ({
         <Button>
           <Link
             sx={{ textDecoration: "none", color: "black" }}
-            to={`/player/${playlistId}`}
+            to={`/playlist/${playlistId}`}
             component={RouterLink}
           >
             <Stack direction={"row"} alignItems={"center"} spacing={1}>

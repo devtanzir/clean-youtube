@@ -1,6 +1,6 @@
 import { CssBaseline } from "@mui/material";
 import Navbar from "./components/navbar";
-import { Favorite, Home, NotFound, Playlist, Recent } from "./pages";
+import { Favorite, Home, NotFound, Player, Playlist, Recent } from "./pages";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
@@ -12,7 +12,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/recent" element={<Recent />} />
         <Route path="/favorite" element={<Favorite />} />
-        <Route path="/player/:playlistId" element={<Playlist />} />
+        <Route path="/playlist/:playlistId" element={<Playlist />} />
+        <Route path="/:playlistId/player/:videoId" element={<Player />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

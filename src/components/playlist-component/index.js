@@ -1,2 +1,3 @@
 import PlaylistDetails from "./PlaylistDetails";
-export { PlaylistDetails };
+import PlaylistVideoCard from "./PlaylistVideoCard";
+export { PlaylistDetails, PlaylistVideoCard };

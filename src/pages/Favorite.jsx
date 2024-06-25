@@ -1,6 +1,7 @@
 import { Container, Grid, Typography } from "@mui/material";
 import { useStoreState } from "easy-peasy";
 import PlaylistCard from "../components/playlist-card-item";
+import shortId from "shortid";
 
 const Favorite = () => {
   const state = useStoreState((state) => state);
@@ -14,11 +15,11 @@ const Favorite = () => {
     []
   );
   return (
-    <Container maxWidth={"lg"} sx={{ mt: 16 }}>
+    <Container maxWidth={"lg"} sx={{ mt: 16, mb: 2 }}>
       {favoriteList?.length > 0 ? (
         <Grid container spacing={4}>
           {favoriteList?.map((item) => (
-            <Grid item xs={12} md={6} lg={4} key={item.playlistId}>
+            <Grid item xs={12} md={6} lg={4} key={shortId.generate()}>
               <PlaylistCard
                 fav
                 playlistId={item.playlistId}
