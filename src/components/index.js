@@ -5,7 +5,7 @@ import PlaylistDetails from "./playlist-component/PlaylistDetails";
 import PlaylistCard from "./Shared/playlist-card-item";
 import Modal from "./Shared/playlist-form";
 import PlaylistVideoCard from "./Shared/PlaylistVideoCard";
-
+import Note from "./player-component/Note";
 export {
   Navbar,
   Description,
@@ -14,4 +14,5 @@ export {
   PlaylistCard,
   Modal,
   PlaylistVideoCard,
+  Note,
 };

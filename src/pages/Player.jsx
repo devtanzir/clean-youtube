@@ -10,16 +10,18 @@ import {
   Typography,
 } from "@mui/material";
 
-import { useStoreState } from "easy-peasy";
+import { useStoreActions, useStoreState } from "easy-peasy";
 import ReactPlayer from "react-player";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
-import { Description, VideoList } from "../components";
+import { Description, Modal, Note, VideoList } from "../components";
+import shortid from "shortid";
 
 const Player = () => {
   const { videoId, playlistId } = useParams();
   const { data } = useStoreState((state) => state.playlists);
   const [state, setState] = useState(false);
+  const navigate = useNavigate();
 
   const current = data[playlistId];
 
@@ -27,7 +29,6 @@ const Player = () => {
     return item.contentDetails.videoId;
   });
 
-  const navigate = useNavigate();
   const currentIndex = allVideos.indexOf(videoId);
   const currentVideo = current.playlistItems[currentIndex];
 
@@ -45,6 +46,42 @@ const Player = () => {
   const PlaylistIcon = () => {
     setState(!state);
   };
+
+  /**
+   * Note features
+   */
+  const [currentTime, setCurrentTime] = useState(0);
+  const [open, setOpen] = useState(false);
+  const notes = useStoreActions((actions) => actions.notes);
+  const NoteData = useStoreState((state) => state.notes);
+  const noteContents = NoteData.data[videoId];
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const onProgress = (progress) => {
+    setCurrentTime(progress.playedSeconds);
+  };
+  const addNote = (content, timeStamp) => {
+    notes.createNote({
+      id: shortid.generate(),
+      videoId,
+      timeStamp,
+      content,
+    });
+  };
+  const deleteNote = (note) => {
+    const conf = confirm("are you sure you want to delete your note");
+    if (conf) {
+      notes.deleteNote(note);
+    }
+  };
+
   return (
     <Container maxWidth={"lg"} sx={{ mt: 16, mb: 4 }}>
       <ReactPlayer
@@ -52,11 +89,15 @@ const Player = () => {
         controls={true}
         width={"100%"}
         height={"70vh"}
+        onProgress={onProgress}
         url={`https://www.youtube.com/watch?v=${videoId}`}
       />
       <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
         <Button onClick={handlePrevious} variant="contained">
           Previous
+        </Button>
+        <Button onClick={handleClickOpen} variant="contained">
+          Take Note
         </Button>
         <Button onClick={handleNext} variant="contained">
           Next
@@ -85,6 +126,9 @@ const Player = () => {
       <Grid container spacing={3}>
         <Grid item xs={12} md={12} lg={7}>
           <Description current={current} currentVideo={currentVideo} />
+          {noteContents && noteContents.length > 0 && (
+            <Note noteContents={noteContents} deleteNote={deleteNote} />
+          )}
         </Grid>
         <Grid item xs={12} md={12} lg={5}>
           <VideoList
@@ -98,6 +142,13 @@ const Player = () => {
           />
         </Grid>
       </Grid>
+      <Modal
+        note
+        addNote={addNote}
+        timeStamp={currentTime}
+        open={open}
+        handleClose={handleClose}
+      />
     </Container>
   );
 };

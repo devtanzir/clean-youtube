@@ -6,20 +6,35 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useState } from "react";
-import { extractPlaylistId } from "../../../utils/utils.js";
+import {
+  convertSecondsToTime,
+  extractPlaylistId,
+} from "../../../utils/utils.js";
 
-const Modal = ({ open, handleClose, getPlaylistId }) => {
+const Modal = ({
+  open,
+  handleClose,
+  getPlaylistId,
+  timeStamp,
+  addNote,
+  note = false,
+}) => {
   const [state, setState] = useState("");
   const handleSubmit = (e) => {
     if (!state) {
-      alert("invalid State");
+      alert("invalid data");
     } else {
-      const data = extractPlaylistId(state);
-      if (data) {
-        getPlaylistId(data);
+      if (!note) {
+        const data = extractPlaylistId(state);
+        if (data) {
+          getPlaylistId(data);
+        } else {
+          return alert("invalid playlist Id");
+        }
       } else {
-        return alert("invalid playlist Id");
+        addNote(state, timeStamp);
       }
+
       setState("");
       handleClose();
     }
@@ -27,18 +42,23 @@ const Modal = ({ open, handleClose, getPlaylistId }) => {
   return (
     <>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Add Playlist</DialogTitle>
+        <DialogTitle>{note ? "Create Note" : "Add Playlist"} </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To add a new playlist please insert the playlist id or playlist
+            {!note &&
+              `To add a new playlist please insert the playlist id or playlist
             link. Please make sure the link is correct. Otherwise we wont't able
-            to fetch the playlist information
+            to fetch the playlist information`}
           </DialogContentText>
           <TextField
             autoFocus
             required
             margin="dense"
-            label="Playlist ID or Link"
+            label={`${
+              note
+                ? `${convertSecondsToTime(timeStamp)}`
+                : "Playlist ID or Link"
+            }`}
             type="text"
             fullWidth
             variant="standard"
@@ -47,7 +67,9 @@ const Modal = ({ open, handleClose, getPlaylistId }) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSubmit}>Add Playlist</Button>
+          <Button onClick={handleSubmit}>
+            {note ? "Add Note" : "Add Playlist"}
+          </Button>
         </DialogActions>
       </Dialog>
     </>
