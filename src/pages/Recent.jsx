@@ -1,19 +1,17 @@
 import { Container, Grid, Typography } from "@mui/material";
 import shortid from "shortid";
-import PlaylistCard from "../components/playlist-card-item";
 import { useStoreState } from "easy-peasy";
+import { PlaylistCard } from "../components";
 
 const Recent = () => {
   const state = useStoreState((state) => state);
-  const recentList = Object.values(state.playlists.data)?.reduce(
-    (acc, item) => {
-      if (state.recent?.items?.includes(item.playlistId)) {
-        acc.push(item);
-      }
-      return acc;
-    },
-    []
-  );
+  const recentList = state.recent?.items
+    ?.map((recentId) =>
+      Object.values(state.playlists.data).find(
+        (item) => item.playlistId === recentId
+      )
+    )
+    .filter(Boolean);
   return (
     <Container maxWidth={"lg"} sx={{ mt: 16, mb: 2 }}>
       {recentList?.length > 0 ? (

@@ -21,9 +21,15 @@ const PlaylistsModel = {
       setLoading(true);
       try {
         if (!getState().data[payload]) {
-          const playlist = await getPlaylist(payload);
-          addPlaylist(playlist);
-          setError("");
+          if (Object.keys(getState().data).length < 10) {
+            const playlist = await getPlaylist(payload);
+            addPlaylist(playlist);
+            setError("");
+          } else {
+            alert("Maximum Playlist Reached");
+          }
+        } else {
+          alert("Playlist Already Exist");
         }
       } catch (e) {
         setError(e.response?.data?.error?.message || "Something went wrong");

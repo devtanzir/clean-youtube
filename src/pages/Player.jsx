@@ -2,27 +2,19 @@ import {
   Avatar,
   Box,
   Button,
-  Card,
   Container,
   Grid,
-  IconButton,
   ListItem,
   ListItemAvatar,
   ListItemText,
-  Stack,
   Typography,
 } from "@mui/material";
-import ClearIcon from "@mui/icons-material/Clear";
 
 import { useStoreState } from "easy-peasy";
-import moment from "moment";
 import ReactPlayer from "react-player";
 import { useNavigate, useParams } from "react-router-dom";
-import { Description } from "../components/player-component";
-import { PlaylistVideoCard } from "../components/playlist-component";
-import shortid from "shortid";
-import { ExpandMore } from "@mui/icons-material";
 import { useState } from "react";
+import { Description, VideoList } from "../components";
 
 const Player = () => {
   const { videoId, playlistId } = useParams();
@@ -50,8 +42,11 @@ const Player = () => {
       currentIndex === allVideos.length - 1 ? 0 : currentIndex + 1;
     navigate(`/${playlistId}/player/${allVideos[nextIndex]}`);
   };
+  const PlaylistIcon = () => {
+    setState(!state);
+  };
   return (
-    <Container maxWidth={"lg"} sx={{ mt: 16, mb: 2 }}>
+    <Container maxWidth={"lg"} sx={{ mt: 16, mb: 4 }}>
       <ReactPlayer
         playing={true}
         controls={true}
@@ -92,56 +87,15 @@ const Player = () => {
           <Description current={current} currentVideo={currentVideo} />
         </Grid>
         <Grid item xs={12} md={12} lg={5}>
-          <Stack
-            direction={"row"}
-            alignItems={"center"}
-            justifyContent={"space-between"}
-            sx={{
-              py: "20px",
-              backgroundColor: "#f7f7f7",
-              px: "10px",
-              borderRadius: 3,
-              mt: 2,
-            }}
-          >
-            <Typography
-              title={current.playlistTitle}
-              variant="h5"
-              fontWeight={700}
-              fontSize={20}
-            >
-              {current.playlistTitle.length > 37
-                ? `${current.playlistTitle.substr(0, 37)}...`
-                : current.playlistTitle}
-            </Typography>
-            <IconButton onClick={() => setState(!state)}>
-              {state ? <ClearIcon /> : <ExpandMore />}
-            </IconButton>
-          </Stack>
-          {state && (
-            <Box
-              sx={{
-                ...(allVideos.length > 5 && {
-                  maxHeight: "390px",
-                  overflowY: "scroll",
-                  scrollBehavior: "smooth",
-                  scrollbarWidth: "thin",
-                  scrollbarColor: "#84817a #fff",
-                }),
-              }}
-            >
-              {current?.playlistItems?.map((item, index) => (
-                <PlaylistVideoCard
-                  player
-                  key={shortid.generate()}
-                  video={item}
-                  index={index}
-                  channelTitle={current.channelTitle}
-                  playlistId={playlistId}
-                />
-              ))}
-            </Box>
-          )}
+          <VideoList
+            current={current}
+            currentIndex={currentIndex}
+            allVideos={allVideos}
+            state={state}
+            playlistId={playlistId}
+            videoId={videoId}
+            PlaylistIcon={PlaylistIcon}
+          />
         </Grid>
       </Grid>
     </Container>

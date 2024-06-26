@@ -1,7 +1,7 @@
 import { Container, Grid, Typography } from "@mui/material";
-import PlaylistCard from "../components/playlist-card-item";
 import { useStoreState } from "easy-peasy";
 import shortid from "shortid";
+import { PlaylistCard } from "../components";
 
 const Home = () => {
   const { data } = useStoreState((state) => state.playlists);

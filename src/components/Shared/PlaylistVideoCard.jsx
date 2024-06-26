@@ -1,3 +1,4 @@
+import { PlayArrow } from "@mui/icons-material";
 import {
   Box,
   Card,
@@ -16,9 +17,9 @@ const PlaylistVideoCard = ({
   channelTitle,
   playlistId,
   player = false,
+  videoId,
 }) => {
   const date = moment(video.contentDetails.videoPublishedAt).fromNow();
-
   const recent = useStoreActions((action) => action.recent);
   return (
     <Card
@@ -35,6 +36,9 @@ const PlaylistVideoCard = ({
         backgroundColor: "transparent",
         ...(player && {
           py: "8px",
+          ...(videoId === video.contentDetails.videoId && {
+            backgroundColor: "#f0f0f0",
+          }),
         }),
 
         boxShadow: "none",
@@ -52,13 +56,20 @@ const PlaylistVideoCard = ({
           ...(player && {
             fontSize: 12,
             fontWeight: 400,
+            textAlign: "center",
+            width: "24px",
           }),
         }}
         fontSize={14}
         fontWeight={500}
         color={"#aaa"}
       >
-        {index + 1}
+        {player &&
+          (videoId === video.contentDetails.videoId ? (
+            <PlayArrow sx={{ width: 18 }} />
+          ) : (
+            index + 1
+          ))}
       </Typography>
       <CardMedia
         component="img"

@@ -1,21 +1,9 @@
-import {
-  Box,
-  Card,
-  CardContent,
-  CardMedia,
-  Container,
-  Grid,
-  IconButton,
-  Typography,
-} from "@mui/material";
+import { Container, Grid } from "@mui/material";
 import { useStoreState } from "easy-peasy";
 import { useParams } from "react-router-dom";
 import { dateFormate } from "../utils/utils";
-import {
-  PlaylistDetails,
-  PlaylistVideoCard,
-} from "../components/playlist-component";
 import shortid from "shortid";
+import { PlaylistDetails, PlaylistVideoCard } from "../components";
 
 const Playlist = () => {
   const { playlistId } = useParams();

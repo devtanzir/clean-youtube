@@ -1,3 +1,3 @@
 import PlaylistDetails from "./PlaylistDetails";
-import PlaylistVideoCard from "./PlaylistVideoCard";
+import PlaylistVideoCard from "../Shared/PlaylistVideoCard";
 export { PlaylistDetails, PlaylistVideoCard };

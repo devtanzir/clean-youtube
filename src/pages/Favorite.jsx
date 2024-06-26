@@ -1,19 +1,17 @@
 import { Container, Grid, Typography } from "@mui/material";
 import { useStoreState } from "easy-peasy";
-import PlaylistCard from "../components/playlist-card-item";
 import shortId from "shortid";
+import { PlaylistCard } from "../components";
 
 const Favorite = () => {
   const state = useStoreState((state) => state);
-  const favoriteList = Object.values(state.playlists.data)?.reduce(
-    (acc, item) => {
-      if (state.favorite?.items?.includes(item.playlistId)) {
-        acc.push(item);
-      }
-      return acc;
-    },
-    []
-  );
+  const favoriteList = state.favorite?.items
+    ?.map((favoriteId) =>
+      Object.values(state.playlists.data).find(
+        (item) => item.playlistId === favoriteId
+      )
+    )
+    .filter(Boolean);
   return (
     <Container maxWidth={"lg"} sx={{ mt: 16, mb: 2 }}>
       {favoriteList?.length > 0 ? (

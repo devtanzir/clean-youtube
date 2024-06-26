@@ -39,12 +39,13 @@ const Description = ({ current, currentVideo }) => {
       ) : (
         <Typography
           onClick={() => setState(!state)}
-          variant="h6"
-          fontWeight={700}
+          variant="body2"
           fontSize={"14px"}
           sx={{ cursor: "pointer", mt: 1, userSelect: "none" }}
         >
           {" "}
+          {currentVideo.description?.length > 40 &&
+            currentVideo.description.substr(0, 40)}
           ...More
         </Typography>
       )}

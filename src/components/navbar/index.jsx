@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import { useState } from "react";
-import Modal from "../playlist-form";
+import Modal from "../Shared/playlist-form";
 import { Link } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import { useStoreActions } from "easy-peasy";

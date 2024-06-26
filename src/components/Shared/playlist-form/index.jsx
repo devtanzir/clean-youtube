@@ -6,7 +6,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useState } from "react";
-import { extractPlaylistId } from "../../utils/utils";
+import { extractPlaylistId } from "../../../utils/utils.js";
 
 const Modal = ({ open, handleClose, getPlaylistId }) => {
   const [state, setState] = useState("");
