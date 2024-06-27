@@ -12,8 +12,9 @@ const NoteModel = {
   }),
   updateNote: action((state, payload) => {
     if (state.data[payload.videoId]) {
-      state.data[payload.videoId].find((note) => note.id === payload.id).note =
-        payload.note;
+      state.data[payload.videoId].find(
+        (note) => note.id === payload.id
+      ).content = payload.content;
     }
     // toast.success("Note updated successfully");
   }),

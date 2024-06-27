@@ -51,10 +51,10 @@ const Player = () => {
    * Note features
    */
   const [currentTime, setCurrentTime] = useState(0);
-  const [open, setOpen] = useState(false);
   const notes = useStoreActions((actions) => actions.notes);
   const NoteData = useStoreState((state) => state.notes);
   const noteContents = NoteData.data[videoId];
+  const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -74,6 +74,9 @@ const Player = () => {
       timeStamp,
       content,
     });
+  };
+  const updateNote = (note) => {
+    notes.updateNote(note);
   };
   const deleteNote = (note) => {
     const conf = confirm("are you sure you want to delete your note");
@@ -127,7 +130,11 @@ const Player = () => {
         <Grid item xs={12} md={12} lg={7}>
           <Description current={current} currentVideo={currentVideo} />
           {noteContents && noteContents.length > 0 && (
-            <Note noteContents={noteContents} deleteNote={deleteNote} />
+            <Note
+              noteContents={noteContents}
+              updateNote={updateNote}
+              deleteNote={deleteNote}
+            />
           )}
         </Grid>
         <Grid item xs={12} md={12} lg={5}>

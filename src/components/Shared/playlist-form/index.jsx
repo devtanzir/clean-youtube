@@ -17,7 +17,10 @@ const Modal = ({
   getPlaylistId,
   timeStamp,
   addNote,
+  editNote,
+  noteValue,
   note = false,
+  edit = false,
 }) => {
   const [state, setState] = useState("");
   const handleSubmit = (e) => {
@@ -32,7 +35,11 @@ const Modal = ({
           return alert("invalid playlist Id");
         }
       } else {
-        addNote(state, timeStamp);
+        if (!edit) {
+          addNote(state, timeStamp);
+        } else {
+          editNote(state);
+        }
       }
 
       setState("");
@@ -54,6 +61,7 @@ const Modal = ({
             autoFocus
             required
             margin="dense"
+            defaultValue={noteValue}
             label={`${
               note
                 ? `${convertSecondsToTime(timeStamp)}`
@@ -68,7 +76,7 @@ const Modal = ({
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <Button onClick={handleSubmit}>
-            {note ? "Add Note" : "Add Playlist"}
+            {note ? (edit ? "Update Note" : "Add Note") : "Add Playlist"}
           </Button>
         </DialogActions>
       </Dialog>
