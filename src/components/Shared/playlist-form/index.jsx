@@ -6,12 +6,9 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import CircularProgress from "@mui/material/CircularProgress";
-import { useEffect, useState } from "react";
-import {
-  convertSecondsToTime,
-  extractPlaylistId,
-} from "../../../utils/utils.js";
-import { toast } from "react-toastify";
+import { convertSecondsToTime } from "../../../utils/utils.js";
+import PropTypes from "prop-types";
+import useModal from "./hook/useModal.js";
 
 const Modal = ({
   open,
@@ -20,40 +17,26 @@ const Modal = ({
   timeStamp,
   addNote,
   editNote,
+  submitNote,
   loading,
   noteValue,
   note = false,
   edit = false,
 }) => {
-  const [state, setState] = useState("");
-
-  const handleSubmit = async (e) => {
-    if (!state) {
-      toast.error("invalid Credentials");
-    } else {
-      if (!note && !loading) {
-        const data = extractPlaylistId(state);
-        if (data) {
-          getPlaylistId(data);
-        } else {
-          return toast.error("Invalid playlist Id");
-        }
-      } else {
-        if (!edit) {
-          addNote(state, timeStamp);
-          handleClose();
-        } else {
-          editNote(state);
-          handleClose();
-        }
-      }
-
-      setState("");
-    }
-  };
+  const { handleSubmit, close, handleState } = useModal(
+    handleClose,
+    getPlaylistId,
+    addNote,
+    editNote,
+    submitNote,
+    note,
+    loading,
+    timeStamp,
+    edit
+  );
   return (
     <>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={close}>
         <DialogTitle>{note ? "Create Note" : "Add Playlist"} </DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -76,11 +59,11 @@ const Modal = ({
             type="text"
             fullWidth
             variant="standard"
-            onChange={(e) => setState(e.target.value)}
+            onChange={(e) => handleState(e.target.value)}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={close}>Cancel</Button>
           <Button disabled={loading} onClick={handleSubmit}>
             {loading ? (
               <CircularProgress size={20} />
@@ -99,4 +82,18 @@ const Modal = ({
     </>
   );
 };
+Modal.propTypes = {
+  open: PropTypes.bool,
+  handleClose: PropTypes.func,
+  getPlaylistId: PropTypes.func,
+  timeStamp: PropTypes.number,
+  addNote: PropTypes.func,
+  editNote: PropTypes.func,
+  submitNote: PropTypes.func,
+  loading: PropTypes.bool,
+  noteValue: PropTypes.string,
+  note: PropTypes.bool,
+  edit: PropTypes.bool,
+};
+
 export default Modal;

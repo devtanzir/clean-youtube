@@ -1,26 +1,21 @@
 import { Box, Stack, Typography } from "@mui/material";
 import { convertSecondsToTime } from "../../utils/utils";
 import Modal from "../Shared/playlist-form";
-import useModal from "../../hooks/useModal";
 import Confirm from "../Shared/Confirm";
+import PropTypes from "prop-types";
+import useNoteItem from "./hook/useNoteItem";
 
 const NoteItems = ({ note, deleteNote, updateNote }) => {
   const {
-    handleClickOpen: ConfOpen,
-    handleClose: ConfClose,
-    open: confState,
-  } = useModal();
-  const { handleClickOpen, handleClose, open } = useModal();
-  const editNote = (data) => {
-    const cloneNote = { ...note };
-    cloneNote.content = data;
-
-    updateNote(cloneNote);
-  };
-
-  const handleNote = (bool) => {
-    deleteNote(note, bool);
-  };
+    ConfOpen,
+    ConfClose,
+    confState,
+    handleClickOpen,
+    handleClose,
+    open,
+    editNote,
+    handleNote,
+  } = useNoteItem(note, deleteNote, updateNote);
   return (
     <>
       <Box mt={2} key={note.id}>
@@ -71,6 +66,12 @@ const NoteItems = ({ note, deleteNote, updateNote }) => {
       />
     </>
   );
+};
+
+NoteItems.propTypes = {
+  note: PropTypes.object,
+  deleteNote: PropTypes.func,
+  updateNote: PropTypes.func,
 };
 
 export default NoteItems;

@@ -23,6 +23,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import Confirm from "../Confirm";
 import useModal from "../../../hooks/useModal";
+import PropTypes from "prop-types";
 
 const PlaylistCard = ({
   playlistThumbnail,
@@ -126,4 +127,13 @@ const PlaylistCard = ({
     </Card>
   );
 };
+PlaylistCard.propTypes = {
+  playlistThumbnail: PropTypes.object,
+  playlistTitle: PropTypes.string,
+  channelTitle: PropTypes.string,
+  fav: PropTypes.bool,
+  channelLogo: PropTypes.object,
+  playlistId: PropTypes.string,
+};
+
 export default PlaylistCard;

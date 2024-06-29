@@ -3,6 +3,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import PropTypes from "prop-types";
 
 const Confirm = ({ open, handleClose, handleDelete }) => {
   const handleDesAgree = () => {
@@ -44,4 +45,10 @@ const Confirm = ({ open, handleClose, handleDelete }) => {
     </>
   );
 };
+Confirm.propTypes = {
+  open: PropTypes.bool,
+  handleClose: PropTypes.func,
+  handleDelete: PropTypes.func,
+};
+
 export default Confirm;

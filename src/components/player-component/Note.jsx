@@ -1,4 +1,5 @@
 import { Card, Divider, Typography } from "@mui/material";
+import PropTypes from "prop-types";
 
 import NoteItems from "./NoteItems";
 
@@ -29,6 +30,11 @@ const Note = ({ noteContents, deleteNote, updateNote }) => {
       ))}
     </Card>
   );
+};
+Note.propTypes = {
+  noteContents: PropTypes.array,
+  deleteNote: PropTypes.func,
+  updateNote: PropTypes.func,
 };
 
 export default Note;

@@ -3,6 +3,7 @@ import { Box, IconButton, Stack, Typography } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 import shortid from "shortid";
 import { PlaylistVideoCard } from "../playlist-component";
+import PropTypes from "prop-types";
 
 const VideoList = ({
   current,
@@ -83,6 +84,15 @@ const VideoList = ({
       )}
     </>
   );
+};
+VideoList.propTypes = {
+  current: PropTypes.object,
+  currentIndex: PropTypes.number,
+  allVideos: PropTypes.array,
+  state: PropTypes.bool,
+  playlistId: PropTypes.string,
+  videoId: PropTypes.string,
+  PlaylistIcon: PropTypes.func,
 };
 
 export default VideoList;

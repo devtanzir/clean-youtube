@@ -3,6 +3,7 @@ import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
 import { useStoreActions } from "easy-peasy";
 import moment from "moment";
 import { Link as RouterLink } from "react-router-dom";
+import PropTypes from "prop-types";
 
 const PlaylistVideoCard = ({
   video,
@@ -71,6 +72,7 @@ const PlaylistVideoCard = ({
           borderRadius: 3,
           height: 90,
           objectFit: "cover",
+          display: { xs: "none", sm: "block", lg: "block" },
           ...(player && {
             width: 100,
             height: 56,
@@ -127,6 +129,14 @@ const PlaylistVideoCard = ({
       </Box>
     </Card>
   );
+};
+PlaylistVideoCard.propTypes = {
+  video: PropTypes.object,
+  index: PropTypes.number,
+  channelTitle: PropTypes.string,
+  playlistId: PropTypes.string,
+  player: PropTypes.bool,
+  videoId: PropTypes.string,
 };
 
 export default PlaylistVideoCard;

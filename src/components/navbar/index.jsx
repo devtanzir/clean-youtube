@@ -1,38 +1,46 @@
+import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
-import Stack from "@mui/material/Stack";
-import Modal from "../Shared/playlist-form";
-import { Link } from "@mui/material";
+import { Link, Stack } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
-import { useStoreActions, useStoreState } from "easy-peasy";
-import useModal from "../../hooks/useModal";
-import { toast } from "react-toastify";
 import CustomNavLink from "./customNavlink";
+import Modal from "../Shared/playlist-form";
+import DrawerComponent from "./Drawer";
+import useNavbar from "./hook/useNavbar";
 
-const Navbar = () => {
-  const playlist = useStoreActions((actions) => actions.playlists);
-  const playlistState = useStoreState((state) => state.playlists);
-  const { handleClickOpen, handleClose, open } = useModal();
-
-  const getPlaylistId = async (playlistId) => {
-    const res = await playlist.getPlaylists(playlistId);
-    if (res.success) {
-      toast.success(res.message);
-      handleClose();
-    } else {
-      toast.error(res.message);
-    }
-  };
+const Navbar = (props) => {
+  const {
+    mobileOpen,
+    handleDrawerToggle,
+    playlistState,
+    handleClickOpen,
+    open,
+    handleClose,
+    getPlaylistId,
+    container,
+  } = useNavbar(props);
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" color="default" sx={{ py: 2 }}>
+    <Box sx={{ display: "flex" }}>
+      <AppBar component="nav" position="fixed" color="default" sx={{ py: 2 }}>
         <Container maxWidth={"lg"}>
           <Toolbar>
-            <Stack sx={{ flexGrow: 1 }}>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2, display: { sm: "none" } }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Stack sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}>
               <Link
                 sx={{ textDecoration: "none", color: "black" }}
                 to={"/"}
@@ -42,18 +50,35 @@ const Navbar = () => {
               </Link>
               <Typography variant="body1">By Tanzir Ibne Ali</Typography>
             </Stack>
-            <Box sx={{ flexGrow: 1, gap: 4, display: "flex" }}>
-              <CustomNavLink to={"/"} component={RouterLink}>
+            <Box
+              sx={{
+                display: { xs: "none", sm: "block" },
+                flexGrow: 1,
+              }}
+            >
+              <CustomNavLink
+                sx={{ marginRight: "20px" }}
+                to={"/"}
+                component={RouterLink}
+              >
                 All Playlist
               </CustomNavLink>
-              <CustomNavLink to={"/recent"} component={RouterLink}>
+              <CustomNavLink
+                sx={{ marginRight: "20px" }}
+                to={"/recent"}
+                component={RouterLink}
+              >
                 Recent
               </CustomNavLink>
               <CustomNavLink to={"/favorite"} component={RouterLink}>
                 Favorite
               </CustomNavLink>
             </Box>
-            <Button onClick={handleClickOpen} variant="contained">
+            <Button
+              onClick={handleClickOpen}
+              sx={{ ml: "auto" }}
+              variant="contained"
+            >
               Add Playlist
             </Button>
             <Modal
@@ -65,7 +90,33 @@ const Navbar = () => {
           </Toolbar>
         </Container>
       </AppBar>
+
+      <nav>
+        <Drawer
+          container={container}
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+          sx={{
+            display: { xs: "block", sm: "none" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: 240,
+            },
+          }}
+        >
+          <DrawerComponent handleDrawerToggle={handleDrawerToggle} />
+        </Drawer>
+      </nav>
     </Box>
   );
 };
+
+Navbar.propTypes = {
+  window: PropTypes.func,
+};
+
 export default Navbar;

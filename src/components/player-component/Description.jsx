@@ -1,6 +1,7 @@
 import { Card, Stack, Typography } from "@mui/material";
 import moment from "moment";
 import { useState } from "react";
+import PropTypes from "prop-types";
 
 const Description = ({ current, currentVideo }) => {
   const [state, setState] = useState(false);
@@ -52,5 +53,8 @@ const Description = ({ current, currentVideo }) => {
     </Card>
   );
 };
-
+Description.propTypes = {
+  current: PropTypes.object,
+  currentVideo: PropTypes.object,
+};
 export default Description;
