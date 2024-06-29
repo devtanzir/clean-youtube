@@ -1,7 +1,8 @@
-import { Container, Grid, Typography } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 import { useStoreState } from "easy-peasy";
 import shortId from "shortid";
 import { PlaylistCard } from "../components";
+import NoFavoriteFound from "../animation/NoFavorite";
 
 const Favorite = () => {
   const state = useStoreState((state) => state);
@@ -30,9 +31,7 @@ const Favorite = () => {
           ))}
         </Grid>
       ) : (
-        <Typography variant="h2" align="center">
-          No Data Found
-        </Typography>
+        <NoFavoriteFound title={"No Favorite Playlist Found !"} />
       )}
     </Container>
   );

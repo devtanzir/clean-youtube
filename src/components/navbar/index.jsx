@@ -5,26 +5,27 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
-import { useState } from "react";
 import Modal from "../Shared/playlist-form";
 import { Link } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
-import { useStoreActions } from "easy-peasy";
+import { useStoreActions, useStoreState } from "easy-peasy";
+import useModal from "../../hooks/useModal";
+import { toast } from "react-toastify";
+import CustomNavLink from "./customNavlink";
 
 const Navbar = () => {
   const playlist = useStoreActions((actions) => actions.playlists);
+  const playlistState = useStoreState((state) => state.playlists);
+  const { handleClickOpen, handleClose, open } = useModal();
 
-  const [open, setOpen] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const getPlaylistId = (playlistId) => {
-    playlist.getPlaylists(playlistId);
+  const getPlaylistId = async (playlistId) => {
+    const res = await playlist.getPlaylists(playlistId);
+    if (res.success) {
+      toast.success(res.message);
+      handleClose();
+    } else {
+      toast.error(res.message);
+    }
   };
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -41,22 +42,23 @@ const Navbar = () => {
               </Link>
               <Typography variant="body1">By Tanzir Ibne Ali</Typography>
             </Stack>
-            <Box sx={{ flexGrow: 1, gap: 2, display: "flex" }}>
-              <Button to={"/"} component={RouterLink}>
+            <Box sx={{ flexGrow: 1, gap: 4, display: "flex" }}>
+              <CustomNavLink to={"/"} component={RouterLink}>
                 All Playlist
-              </Button>
-              <Button to={"/recent"} component={RouterLink}>
+              </CustomNavLink>
+              <CustomNavLink to={"/recent"} component={RouterLink}>
                 Recent
-              </Button>
-              <Button to={"/favorite"} component={RouterLink}>
+              </CustomNavLink>
+              <CustomNavLink to={"/favorite"} component={RouterLink}>
                 Favorite
-              </Button>
+              </CustomNavLink>
             </Box>
             <Button onClick={handleClickOpen} variant="contained">
               Add Playlist
             </Button>
             <Modal
               getPlaylistId={getPlaylistId}
+              loading={playlistState.isLoading}
               open={open}
               handleClose={handleClose}
             />

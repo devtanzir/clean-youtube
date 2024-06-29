@@ -1,11 +1,10 @@
-import { Container, Typography } from "@mui/material";
+import { Container } from "@mui/material";
+import NotFound404 from "../animation/404";
 
 const NotFound = () => {
   return (
     <Container maxWidth={"lg"} sx={{ mt: 16, mb: 2 }}>
-      <Typography align="center" variant="h2">
-        404 Not Found
-      </Typography>
+      <NotFound404 title={"Maybe You Are Lost !"} />
     </Container>
   );
 };

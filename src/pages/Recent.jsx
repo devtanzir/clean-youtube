@@ -1,7 +1,8 @@
-import { Container, Grid, Typography } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 import shortid from "shortid";
 import { useStoreState } from "easy-peasy";
 import { PlaylistCard } from "../components";
+import NodataFound from "../animation/NodataFound";
 
 const Recent = () => {
   const state = useStoreState((state) => state);
@@ -30,9 +31,7 @@ const Recent = () => {
           ))}
         </Grid>
       ) : (
-        <Typography variant="h2" align="center">
-          No Data Found
-        </Typography>
+        <NodataFound title={"No Recent Playlist Found !"} />
       )}
     </Container>
   );

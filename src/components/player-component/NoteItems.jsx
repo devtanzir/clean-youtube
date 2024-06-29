@@ -1,23 +1,25 @@
 import { Box, Stack, Typography } from "@mui/material";
 import { convertSecondsToTime } from "../../utils/utils";
-import { useState } from "react";
 import Modal from "../Shared/playlist-form";
+import useModal from "../../hooks/useModal";
+import Confirm from "../Shared/Confirm";
 
 const NoteItems = ({ note, deleteNote, updateNote }) => {
-  const [open, setOpen] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const {
+    handleClickOpen: ConfOpen,
+    handleClose: ConfClose,
+    open: confState,
+  } = useModal();
+  const { handleClickOpen, handleClose, open } = useModal();
   const editNote = (data) => {
     const cloneNote = { ...note };
     cloneNote.content = data;
 
     updateNote(cloneNote);
+  };
+
+  const handleNote = (bool) => {
+    deleteNote(note, bool);
   };
   return (
     <>
@@ -41,7 +43,7 @@ const NoteItems = ({ note, deleteNote, updateNote }) => {
           </Typography>
           <Typography
             variant="body1"
-            onClick={() => deleteNote(note)}
+            onClick={ConfOpen}
             sx={{
               cursor: "pointer",
               color: "#000",
@@ -61,6 +63,11 @@ const NoteItems = ({ note, deleteNote, updateNote }) => {
         noteValue={note.content}
         open={open}
         handleClose={handleClose}
+      />
+      <Confirm
+        handleClose={ConfClose}
+        open={confState}
+        handleDelete={handleNote}
       />
     </>
   );

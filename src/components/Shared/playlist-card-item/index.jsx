@@ -12,6 +12,7 @@ import {
   ListItemAvatar,
   ListItemText,
   Stack,
+  Tooltip,
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -20,6 +21,8 @@ import { PlayCircleOutline } from "@mui/icons-material";
 import { Link } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import { useStoreActions, useStoreState } from "easy-peasy";
+import Confirm from "../Confirm";
+import useModal from "../../../hooks/useModal";
 
 const PlaylistCard = ({
   playlistThumbnail,
@@ -31,10 +34,9 @@ const PlaylistCard = ({
 }) => {
   const action = useStoreActions((actions) => actions);
   const favoriteState = useStoreState((state) => state.favorite);
-
-  const handleDelete = () => {
-    const conf = confirm("Are You Sure");
-    if (conf) {
+  const { open, handleClickOpen, handleClose } = useModal();
+  const handleDelete = (bool) => {
+    if (bool) {
       action.playlists.removeFromPlaylist(playlistId);
       action.favorite.removeFromFavorite(playlistId);
     }
@@ -90,26 +92,37 @@ const PlaylistCard = ({
         </Button>
         <Box component={"div"}>
           {favoriteState?.items?.includes(playlistId) ? (
-            <IconButton
-              onClick={() => action.favorite.removeFromFavorite(playlistId)}
-            >
-              <FavoriteIcon color="error" />
-            </IconButton>
+            <Tooltip placement="top" title="Remove From Favorite">
+              <IconButton
+                onClick={() => action.favorite.removeFromFavorite(playlistId)}
+              >
+                <FavoriteIcon color="error" />
+              </IconButton>
+            </Tooltip>
           ) : (
-            <IconButton
-              onClick={() => action.favorite.addToFavorite(playlistId)}
-            >
-              <FavoriteBorderIcon color="error" />
-            </IconButton>
+            <Tooltip placement="top" title="Add to Favorite">
+              <IconButton
+                onClick={() => action.favorite.addToFavorite(playlistId)}
+              >
+                <FavoriteBorderIcon color="error" />
+              </IconButton>
+            </Tooltip>
           )}
 
           {!fav && (
-            <IconButton onClick={handleDelete}>
-              <DeleteIcon color="warning" />
-            </IconButton>
+            <Tooltip placement="top" title="Delete">
+              <IconButton onClick={handleClickOpen}>
+                <DeleteIcon color="warning" />
+              </IconButton>
+            </Tooltip>
           )}
         </Box>
       </CardActions>
+      <Confirm
+        open={open}
+        handleClose={handleClose}
+        handleDelete={handleDelete}
+      />
     </Card>
   );
 };

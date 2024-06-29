@@ -1,12 +1,5 @@
 import { PlayArrow } from "@mui/icons-material";
-import {
-  Box,
-  Card,
-  CardContent,
-  CardMedia,
-  IconButton,
-  Typography,
-} from "@mui/material";
+import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
 import { useStoreActions } from "easy-peasy";
 import moment from "moment";
 import { Link as RouterLink } from "react-router-dom";
@@ -84,7 +77,7 @@ const PlaylistVideoCard = ({
             borderRadius: 1,
           }),
         }}
-        image={video.thumbnail.url}
+        image={video.thumbnail?.url}
         alt={video.title}
       />
       <Box sx={{ display: "flex", flexDirection: "column" }}>

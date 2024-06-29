@@ -16,6 +16,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import { Description, Modal, Note, VideoList } from "../components";
 import shortid from "shortid";
+import useModal from "../hooks/useModal";
 
 const Player = () => {
   const { videoId, playlistId } = useParams();
@@ -54,15 +55,7 @@ const Player = () => {
   const notes = useStoreActions((actions) => actions.notes);
   const NoteData = useStoreState((state) => state.notes);
   const noteContents = NoteData.data[videoId];
-  const [open, setOpen] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const { handleClickOpen, handleClose, open } = useModal();
 
   const onProgress = (progress) => {
     setCurrentTime(progress.playedSeconds);
@@ -78,9 +71,8 @@ const Player = () => {
   const updateNote = (note) => {
     notes.updateNote(note);
   };
-  const deleteNote = (note) => {
-    const conf = confirm("are you sure you want to delete your note");
-    if (conf) {
+  const deleteNote = (note, bool) => {
+    if (bool) {
       notes.deleteNote(note);
     }
   };

@@ -1,5 +1,6 @@
 import { action, thunk } from "easy-peasy";
 import getPlaylist from "../Api";
+import { toast } from "react-toastify";
 const PlaylistsModel = {
   data: {},
   error: "",
@@ -9,6 +10,7 @@ const PlaylistsModel = {
   }),
   removeFromPlaylist: action((state, payload) => {
     delete state.data[payload];
+    toast.success("playlist removed Successfully");
   }),
   setLoading: action((state, payload) => {
     state.isLoading = payload;
@@ -17,22 +19,31 @@ const PlaylistsModel = {
     state.error = payload;
   }),
   getPlaylists: thunk(
-    async ({ addPlaylist, setLoading, setError }, payload, { getState }) => {
+    async ({ addPlaylist, setLoading, setError }, playlistId, { getState }) => {
       setLoading(true);
       try {
-        if (!getState().data[payload]) {
-          if (Object.keys(getState().data).length < 10) {
-            const playlist = await getPlaylist(payload);
-            addPlaylist(playlist);
-            setError("");
-          } else {
-            alert("Maximum Playlist Reached");
-          }
-        } else {
-          alert("Playlist Already Exist");
+        const currentData = getState().data;
+
+        if (currentData[playlistId]) {
+          setLoading(false);
+          return { success: false, message: "Playlist Already Exist" };
         }
-      } catch (e) {
-        setError(e.response?.data?.error?.message || "Something went wrong");
+
+        if (Object.keys(currentData).length >= 10) {
+          setLoading(false);
+          return { success: false, message: "Maximum Playlist Reached" };
+        }
+
+        const playlist = await getPlaylist(playlistId);
+        addPlaylist(playlist);
+        setError(""); // Clear any previous errors on success
+        return { success: true, message: "Playlist created successfully" };
+      } catch (error) {
+        const errorMessage =
+          error.response?.data?.error?.message || "Something went wrong";
+        setError(errorMessage);
+        toast.error(errorMessage);
+        return { success: false, message: errorMessage };
       } finally {
         setLoading(false);
       }

@@ -2,10 +2,12 @@ import { Container, Grid, Typography } from "@mui/material";
 import { useStoreState } from "easy-peasy";
 import shortid from "shortid";
 import { PlaylistCard } from "../components";
+import NodataFound from "../animation/NodataFound";
 
 const Home = () => {
-  const { data } = useStoreState((state) => state.playlists);
-  const playlistArray = Object.values(data);
+  const state = useStoreState((state) => state);
+  const playlistArray = Object.values(state.playlists.data);
+
   return (
     <Container maxWidth={"lg"} sx={{ mt: 16, mb: 2 }}>
       {playlistArray?.length > 0 ? (
@@ -23,9 +25,7 @@ const Home = () => {
           ))}
         </Grid>
       ) : (
-        <Typography variant="h2" align="center">
-          No Data Found
-        </Typography>
+        <NodataFound title={"No Playlist Found !"} />
       )}
     </Container>
   );

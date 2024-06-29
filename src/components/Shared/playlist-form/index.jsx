@@ -5,11 +5,13 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { useState } from "react";
+import CircularProgress from "@mui/material/CircularProgress";
+import { useEffect, useState } from "react";
 import {
   convertSecondsToTime,
   extractPlaylistId,
 } from "../../../utils/utils.js";
+import { toast } from "react-toastify";
 
 const Modal = ({
   open,
@@ -18,32 +20,35 @@ const Modal = ({
   timeStamp,
   addNote,
   editNote,
+  loading,
   noteValue,
   note = false,
   edit = false,
 }) => {
   const [state, setState] = useState("");
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     if (!state) {
-      alert("invalid data");
+      toast.error("invalid Credentials");
     } else {
-      if (!note) {
+      if (!note && !loading) {
         const data = extractPlaylistId(state);
         if (data) {
           getPlaylistId(data);
         } else {
-          return alert("invalid playlist Id");
+          return toast.error("Invalid playlist Id");
         }
       } else {
         if (!edit) {
           addNote(state, timeStamp);
+          handleClose();
         } else {
           editNote(state);
+          handleClose();
         }
       }
 
       setState("");
-      handleClose();
     }
   };
   return (
@@ -60,6 +65,7 @@ const Modal = ({
           <TextField
             autoFocus
             required
+            multiline={note}
             margin="dense"
             defaultValue={noteValue}
             label={`${
@@ -75,8 +81,18 @@ const Modal = ({
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSubmit}>
-            {note ? (edit ? "Update Note" : "Add Note") : "Add Playlist"}
+          <Button disabled={loading} onClick={handleSubmit}>
+            {loading ? (
+              <CircularProgress size={20} />
+            ) : note ? (
+              edit ? (
+                "Update Note"
+              ) : (
+                "Add Note"
+              )
+            ) : (
+              "Add Playlist"
+            )}
           </Button>
         </DialogActions>
       </Dialog>
