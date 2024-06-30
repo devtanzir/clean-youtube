@@ -1,0 +1,7 @@
+{
+    "rewrites": [
+      { "source": "/playlist/:playlistId", "destination": "/" },
+      { "source": "/:playlistId/player/:videoId", "destination": "/" }
+    ]
+  }
+  
